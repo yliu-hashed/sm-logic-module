@@ -1,0 +1,21 @@
+extends: default-sans
+title-page:
+  align: center
+  logo:
+    image: image:images/logo.png[pdfwidth=1.5in,align=center,top=30%]
+header:
+  height: 0.5in
+  recto: &header
+    center:
+      content: '{section-or-chapter-title}'
+  verso: *header
+footer:
+  height: 0.5in
+  recto: &footer
+    right:
+      content: '{document-title} | © Yuanda Liu'
+    center:
+      content: '{page-number}'
+    left:
+      content: 'CC-BY-4.0'
+  verso: *footer

@@ -1,0 +1,15 @@
+
+= Miscellaneous Modules
+
+This set of modules is for special modules that are tedious to build by hand, but belong to no particular category. This includes:
+
+* <<comp>> - integer all-result comparison
+* <<penc>> - priority encoder of 2 flavors
+
+:leveloffset: +1
+
+include::comp.adoc[]
+
+include::penc.adoc[]
+
+:leveloffset: -1

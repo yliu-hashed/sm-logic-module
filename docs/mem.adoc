@@ -1,0 +1,140 @@
+= Memory [[mem]]
+
+This section contains memory made of triple XOR DFFs and Timer loops. Each flavor is made with different port configurations. They are named as `<read-port-count>R<write-port-count>W`. Within each flavor, each size is named as `<bits-per-location>X<address-bit-width>`. For example, `2R1W 8X6` means a 2 write 1 read port memory with 8 bits per location, and there are 2^6^ = 64 locations.
+
+The following are the signals for each port. Each module also has a global *CLK* input.
+
+.Read Port Signals:
+[%unbreakable]
+* *ADDR*: Address to read from
+* *DATAO*: Data read out
+
+.Write Port Signals:
+[%unbreakable]
+* *ADDR*: Address to write to
+* *DATAI*: Data to write
+* *WE*: Write Enable (whether to write at this cycle)
+
+These signals' names are prefixed with their index. For example, `0ADDR` means the `ADDR` signal of port zero (the first port).
+
+Both types of memory devices behave like banks of muxed registers. This means that Writes are *synchronized to the clock*, and reads are *combinational*. This standardized behavior allows the two types of devices to be used interchangeably.
+
+.Write Observed by Reading on Port 1
+[wavedrom,,svg]
+....
+{ signal: [
+  {name: 'CLK', wave: 'l...H....'},
+  {node: '.I..C..O.'},
+  {name: '0ADDR' , wave: 'x7..x....', data: ['addr']},
+  {name: '0DATAI', wave: 'x3..x....', data: ['new data']},
+  {name: '0WE', wave: '01..0....', data: ['new data'], node: '.A'},
+  {},
+  {name: '1ADDR' , wave: '7........', data: ['addr']},
+  {name: '1DATAO', wave: '2...x..3.', data: ['old data', 'new data'], node: '.......B'},
+], edge: [
+  'I-A',
+  'O-B',
+  'I+C Tpdi(...)',
+  'C+O Tpdo(1DATAO)'
+], config:{ marks:false }}
+....
+
+.Read On Port 1
+[wavedrom,,svg]
+....
+{ signal: [
+  {node: '..I.O..'},
+  {name: '1ADDR' , wave: '7.5....x.', data: ['old addr', 'new addr'], node: '..A'},
+  {name: '1DATAO', wave: '2.x.2..x.', data: ['old data', 'new data'], node: '....B'},
+], edge: [
+  'I-A',
+  'O-B',
+  'I+O Tpd',
+], config:{ marks:false }}
+....
+
+[NOTE]
+The diagram shows ports 0 and 1 as an example, but all read ports behave identically. The same can be said for all write ports.
+
+== XOR Memory [[mem_xordff]]
+
+Writes are synchronized to the clock, and reads behave combinational.
+
+Memory port 0 is write-only. Memory ports above 0 are all read ports.
+
+These memory modules are made with triple-XOR-loop D-type Flip-Flops. It uses six gates for each bit of storage, which makes them huge. It is only ever necessary to use them for their high speed.
+
+=== MEM XORDFF 1R1W [[mem_xordff_1r1w]]
+
+XOR DFF based memory with 1 read and 1 write ports
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mem_xordff_1r1w
+
+=== MEM XORDFF 2R1W [[mem_xordff_2r1w]]
+
+XOR DFF based memory with 2 read and 1 write ports
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mem_xordff_2r1w
+
+=== MEM XORDFF 3R1W [[mem_xordff_3r1w]]
+
+XOR DFF based memory with 3 read and 1 write ports
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mem_xordff_3r1w
+
+=== MEM XORDFF 4R1W [[mem_xordff_4r1w]]
+
+XOR DFF based memory with 4 read and 1 write ports
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mem_xordff_4r1w
+
+<<<
+
+== Timer Memory [[mem_timer]]
+
+Timer memories are buffered in such a way that mimics traditional flip-flop-based SRAM. Write is synchronized to the clock, and read behaves combinationally.
+
+[NOTE]
+Timer memories only support 1 write port. Port 0 is write-only, while other ports are all read-only.
+
+=== MEM TIMER 1R1W [[mem_timer_1r1w]]
+
+Timer memory with 1 read and 1 write ports
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mem_timer_1r1w
+
+=== MEM TIMER 2R1W [[mem_timer_2r1w]]
+
+Timer memory with 2 read and 1 write ports
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mem_timer_2r1w
+
+=== MEM TIMER 3R1W [[mem_timer_3r1w]]
+
+Timer memory with 3 read and 1 write ports
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mem_timer_3r1w
+
+=== MEM TIMER 4R1W [[mem_timer_4r1w]]
+
+Timer memory with 4 read and 1 write ports
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mem_timer_4r1w
+
+<<<

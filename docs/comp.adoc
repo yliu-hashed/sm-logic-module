@@ -1,0 +1,36 @@
+
+= Comparison [[comp]]
+
+These modules perform comparison operations on binary integer inputs.
+
+== COMP COMB [[comp_comb]]
+
+Combinational Comparison
+
+The comparison module supports comparing signed and unsigned numbers and outputs equal and greater signals. Other signals, like less-than-or-equal, can be made by negating and combining existing signals. Each signal is color-coded for easy identification.
+
+.Output Signals:
+[%unbreakable]
+* *EQ*~green~: Equal
+* *SG*~cyan~: Signed Greater - `Signed A > Signed B`
+* *UG*~blue~: Unsigned Greater - `Unsigned A > Unsigned B`
+* *MG*~purple~: Mixed Greater Type-1 - `Signed A > Unsigned B`
+* *XG*~red~: Mixed Greater Type-2 - `Unsigned B > Signed A`
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 4,8,16,24,32,48,64
+| *A* of LEN +
+  *B* of LEN
+| *EQ,SG,UG,MG,XG*
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: cmp_comb
+
+<<<

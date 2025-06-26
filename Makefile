@@ -383,8 +383,35 @@ $(MEM_XORDFF_4R1W_SYNTH_FILES):
 blueprints/mem_xordff_%.json: tmp/mem_xordff_%_synth.json
 	$(call PLACE_RAW,$?,$@)
 
+
+# Make Report ------------------------------------------------------------------
+# build the stat generator
+tmp/stat-generator:
+	cd stat-generator; swift build
+	cp stat-generator/.build/debug/stat-generator tmp/stat-generator
+
+# run the stat generator to produce data-sheet asciidoc
+tmp/%.adoc: docs/%.adoc tmp/stat-generator
+	tmp/stat-generator $(MKFILE_DIR) $< $@
+
+# convert asciidoc into pdf
+ASCIIDOC_OPT := -a compress -r asciidoctor-diagram --theme resources/theme.yml
+DATASHEET.pdf: $(patsubst docs/%.adoc,tmp/%.adoc,$(wildcard docs/*.adoc)) resources/theme.yml
+	asciidoctor-pdf tmp/main.adoc $(ASCIIDOC_OPT) -o DATASHEET.pdf
+
+# Make Package -----------------------------------------------------------------
+package.zip: $(ALL_BLUEPRINTS_FILES) DATASHEET.pdf
+	zip -r package.zip blueprints DATASHEET.pdf
+
 # Subcommands ------------------------------------------------------------------
+.PHONY: package synth setup clean cleantmp try-deps
+
+package: package.zip
+
 synth: $(ALL_SYNTH_FILES)
+
+# build the datasheet
+datasheet: DATASHEET.pdf
 
 # setup the empty folders ignored by github
 setup:
@@ -399,8 +426,15 @@ clean:
 	mkdir -p tmp
 	mkdir -p blueprints
 	mkdir -p reports
+	rm -rf stat-generator/.build
+	rm -f DATASHEET.pdf
+	rm -f package.zip
 
 # test if all dependencies can be ran
 try-deps:
 	docker -v
 	swift -version
+	asciidoctor -v
+	asciidoctor-pdf -v
+	wavedrom-cli --version
+	zip -v

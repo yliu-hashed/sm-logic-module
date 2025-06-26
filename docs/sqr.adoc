@@ -1,0 +1,67 @@
+
+= Squaring [[sqr]]
+
+These modules perform a squaring operation on binary integer inputs. It is identical to the input multiplied by itself. These modules are slightly more efficient than using multipliers with inputs tied together.
+
+<<<
+
+== Combinational Squaring [[sqr_comb]]
+
+=== SQR COMB TRUNC [[sqr_comb_trunc]]
+
+Truncated Combinational Squaring
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN
+| *Y* of LEN
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: sqr_comb_trunc
+
+=== SQR COMB FULL SIGNED [[sqr_comb_full_signed]]
+
+Full Signed Combinational Squaring
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN
+| *Y* of LEN*2
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: sqr_comb_full_signed
+
+=== SQR COMB FULL UNSIGNED [[sqr_comb_full_unsigned]]
+
+Full Unsigned Combinational Squaring
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN
+| *Y* of LEN*2
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: sqr_comb_full_unsigned
+
+<<<

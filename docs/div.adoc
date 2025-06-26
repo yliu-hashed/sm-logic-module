@@ -1,0 +1,117 @@
+
+= Division [[div]]
+
+These modules perform division operations on binary integer inputs.
+
+When the true quotient is not integral, these division modules always round toward zero. This matches the behavior of integer division in most modern programming languages.
+
+[WARNING]
+Dividing by zero produces undefined results. Modules may output any result under this scenario. Users of these modules should guard against this case explicitly.
+
+<<<
+
+== Combinational Division [[div_comb]]
+
+These modules perform division operations on binary integer inputs using pure combinational logic.
+
+[CAUTION]
+These modules are typically very large. Do not use them unless absolutely necessary. Use the sequential variants if possible.
+
+=== DIV COMB SIGNED [[div_comb_signed]]
+
+Signed Combinational Division
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN
+| *Y* of LEN
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: div_comb_signed
+
+=== DIV COMB UNSIGNED [[div_comb_unsigned]]
+
+Signed Combinational Division
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN
+| *Y* of LEN
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: div_comb_unsigned
+
+<<<
+
+== Sequential Division [[div_seq]]
+
+These modules perform multiplication operations on binary integer inputs using multi-step sequential logic. They are small, but they take longer to produce a result compared to their combinational counterparts.
+
+Contrary to multiplication, the division modules only retire 1 bit of the quotient every cycle.
+
+Assert the `START` signal in the same cycle as `A` and `B` to begin a multiplication between `A` and `B`. Result is shown after `CYCLE` cycles, and is accompanied by a high `DONE` signal in the same clock period.
+
+.Normal Operation
+[wavedrom,,svg]
+....
+{ signal: [
+  {name: 'CLK'  , wave: 'xd0P|P.x'},
+  ['IN',
+    {name: 'A'    , wave: 'x.3x|...', data: ['a']},
+    {name: 'B'    , wave: 'x.3x|...', data: ['b']},
+    {name: 'START', wave: '0.10|...', node: '..m'},
+  ],
+  { node: '...I..J' },
+  ['OUT',
+    {name: 'DONE' , wave: '1..0|.1.', node: '...n'},
+    {name: 'Q'    , wave: '4..x|.5.', data: ['old value', 'a / b']},
+    {name: 'R'    , wave: '4..x|.5.', data: ['old value', 'a%b']},
+  ]
+], edge: [
+  'm-|->n',
+  'I+J CYCLE'
+]}
+....
+
+[NOTE]
+If a `START` signal is asserted for a rising clock edge before `DONE` is asserted, the old request is always discarded. The module behaves as if the current request is the only request.
+
+=== DIV SEQ UNSIGNED [[div_seq_unsigned]]
+
+Signed Combinational Division
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN +
+  *START*(white)
+| *Y* of LEN +
+  *DONE*(green)
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: div_seq_unsigned
+
+<<<

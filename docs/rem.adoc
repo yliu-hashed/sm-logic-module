@@ -1,0 +1,65 @@
+
+= Remainder [[rem]]
+
+These modules perform the remainder operation on binary integer inputs.
+
+Remainder operation holds that: `A = (A / B) * B + (A rem B)`
+
+[CAUTION]
+These are not strict modulo operations. The difference is when the dividend is negative. For example, `-4 rem 3 = -1` while `-4 mod 3 = 2`. The modulo operator `%` in modern languages actually performs remainder operations.
+
+****
+
+*We do not provide separate sequential remainder modules*, as remainder operations on their own are rarely used. The sequential division module has a remainder output. Refer to <<div_seq>>.
+
+****
+
+<<<
+
+== Combinational Remainder [[rem_comb]]
+
+These modules perform the remainder operation on binary integer inputs using purely combinational circuits.
+
+These modules are usually slower than combinational division modules and are usually larger than combinational division modules.
+
+=== REM COMB SIGNED [[rem_comb_signed]]
+
+Signed Combinational Remainder
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN
+| *Y* of LEN
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: rem_comb_signed
+
+=== REM COMB UNSIGNED [[rem_comb_unsigned]]
+
+Unsigned Combinational Remainder
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN
+| *Y* of LEN
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: rem_comb_unsigned
+
+<<<

@@ -1,0 +1,30 @@
+
+= Square Root [[sqrt]]
+
+<<<
+
+== Combinational Square Root
+
+[NOTE]
+Square root operations are always unsigned.
+
+=== SQRT COMB [[sqrt_comb]]
+
+Combinational Square Root
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN
+| *Y* of LEN/2
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: sqrt_comb
+
+<<<

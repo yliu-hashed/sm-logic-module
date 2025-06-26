@@ -1,0 +1,100 @@
+= Addition [[add]]
+
+There are many types of adders with varying topologies: ripple-carry adders, carry-lookahead adders, Kogge-Stone adders, etc. In essence, each topology represents a point on the continuum axis of the tradeoff between delay and size.
+
+The adders in this section are neither of these known topologies. The synthesis toolchain optimizes efficiency under some internal metric for the best delay under the smallest size.
+
+If you wish for the fastest adder or the smallest adder, you should build them yourself. But if you want a fair adder that's efficient, use the adders under this section.
+
+== Combinational Addition [[add_comb]]
+
+.Signals:
+[%unbreakable]
+* *IC*~yellow~: input carry
+* *OC*~yellow~: output carry
+* *OVF*~red~: 2's compliment overflow
+
+The *OC* signal is the output carry signal. It is the traditional unsigned overflow. The *OVF* signal encodes 2's complement overflow.
+
+A larger adder can be built from these smaller adders by chaining the carry signal. In this case, only the final carry and overflow signals indicate a true overflow of this larger word.
+
+=== ADD COMB 2I [[add_comb_2i]]
+
+All-Purpose Adder of 2 inputs
+
+[TIP]
+You can make a subtractor by inverting one input and tying `CI` to high. This effectively performs negation and addition in one go.
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN +
+  *IC*(yellow)
+| *Y* of LEN +
+  *OC*(yellow) +
+  *OVF*(red)
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: add_comb_2i
+
+=== ADD COMB 3I [[add_comb_3i]]
+
+All-Purpose Adder of 3 inputs
+
+The carry signal of this module has 2 bits, but only the carry values of 0, 1, and 2 are supported. Carry value of 3 (11~2~) produces undefined behavior.
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A1* of LEN +
+  *A2* of LEN +
+  *A3* of LEN +
+  *IC*(yellow)
+| *Y* of LEN +
+  *OC*(yellow) +
+  *OVF*(red)
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: add_comb_3i
+
+=== ADD COMB 4I [[add_comb_4i]]
+
+All-Purpose Adder of 4 inputs
+
+The carry of this module has 2 bits. All representable carry values (0, 1, 2, and 3) are supported.
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A1* of LEN +
+  *A2* of LEN +
+  *A3* of LEN +
+  *A4* of LEN +
+  *IC*(yellow)
+| *Y* of LEN +
+  *OC*(yellow) +
+  *OVF*(red)
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: add_comb_4i
+
+<<<

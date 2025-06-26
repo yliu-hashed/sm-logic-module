@@ -1,0 +1,164 @@
+:stem:
+
+= Multiplication [[mul]]
+
+These modules perform multiplication operations on binary integer inputs.
+
+Multiplication is a bit-widening operation. A multiplication of n-bit inputs will result in a 2n-bit product. Since multiplication always carries to the left, the 2n-bit product truncated to n bits will always disregard the result of any sign-extension during computation. Thus, the result of truncated multiplication has identical output regarding whether the inputs are signed or not.
+
+Thus, there are generally 4 flavors of multiplication: truncated, signed, mixed-signed, and unsigned. In truncated multiplication, the result is n bits. For signed, mix-signed, and unsigned multiplication, the result will have 2n bits.
+
+<<<
+
+== Combinational Multiplication [[mul_comb]]
+
+These modules perform multiplication operations on binary integer inputs using purely combinational logic. They are usually fastest but are also largest. Their long critical path made them nearly impossible to fit into any sequential circuit. For this reason, use sequential modules if possible.
+
+[TIP]
+There are typically better ways of constructing circuits that don't require a full multiplier. For example, bitshifting is a better way of multiplying powers of two, and multiplying by a constant can be replaced with shifted adder chains.
+
+=== MUL COMB TRUNC [[mul_comb_trunc]]
+
+Truncated Combinational Multiplication
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN
+| *Y* of LEN
+|===
+
+[NOTE]
+Truncated multiplications have identical behavior regarding input signs.
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mul_comb_trunc
+
+=== MUL COMB FULL SIGNED [[mul_comb_full_signed]]
+
+Full Width Signed Combinational Multiplication
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN
+| *Y* of LEN*2
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mul_comb_full_signed
+
+=== MUL COMB FULL UNSIGNED [[mul_comb_full_unsigned]]
+
+Full Width Unsigned Combinational Multiplication
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A* of LEN +
+  *B* of LEN
+| *Y* of LEN*2
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mul_comb_full_unsigned
+
+=== MUL COMB FULL MIXED [[mul_comb_full_mixed]]
+
+Full Width Mix-signed Combinational Multiplication
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *A*(signed) of LEN +
+  *B*(unsigned) of LEN
+| *Y*(signed) of LEN*2
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mul_comb_full_mixed
+
+<<<
+
+== Sequential Multiplication [[mul_seq]]
+
+These modules perform multiplication operations on binary integer inputs using multi-step sequential logic. They are small, but they take longer to produce a result.
+
+Assert the `START` signal in the same cycle as `A` and `B` to begin a multiplication between `A` and `B`. Result is shown after `CYCLE` cycles, and is accompanied by a high `DONE` signal in the same clock period.
+
+.Normal Operation
+[wavedrom,,svg]
+....
+{ signal: [
+  {name: 'CLK'  , wave: 'xd0P|P.x'},
+  ['IN',
+    {name: 'A'    , wave: 'x.3x|...', data: ['a']},
+    {name: 'B'    , wave: 'x.3x|...', data: ['b']},
+    {name: 'START', wave: '0.10|...', node: '..m'},
+  ],
+  { node: '...I..J' },
+  ['OUT',
+    {name: 'DONE' , wave: '1..0|.1.', node: '...n'},
+    {name: 'Y'    , wave: '4..x|.5.', data: ['old value', 'a x b']},
+  ]
+], edge: [
+  'm-|->n',
+  'I+J CYCLE'
+]}
+....
+
+These are radix-16 multiplication and will generate 4 bits of result at a time.
+[asciimath]
+++++
+"CYCLE" = "LEN" / 4 + 1
+++++
+
+[TIP]
+If a `START` signal is asserted for a rising clock edge before `DONE` is asserted, the old request is always discarded. The module behaves as if the current request is the only request.
+
+=== MUL SEQ TRUNC [[mul_seq_trunc]]
+
+Truncated Sequential Multiplication
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 8,16,24,32
+| *CLK*(blue) +
+  *START*(white) +
+  *A*(signed) of LEN +
+  *B*(unsigned) of LEN
+| *DONE*(green) +
+  *Y*(signed) of LEN
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: mul_seq_trunc
+
+<<<

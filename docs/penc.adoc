@@ -1,0 +1,53 @@
+
+= Priority Encoder [[penc]]
+
+These modules encode signals with max or min priority.
+
+They output the index of the highest or lowest non-zero bit. The bits are indexed by zero, and will also output zero when no bit is active.
+
+[TIP]
+There are many uses of these modules. You can estimate magnitude, perform normalization, or speed up arithmetic algorithms.
+
+== PENC COMB MAX [[penc_comb_max]]
+
+Combinational Priority Encoder with Max Priority
+
+This module outputs the index of the highest non-zero bit.
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 3,4,5,6
+| *X* of 2^LEN^
+| *Y* of LEN
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: penc_comb_max
+
+== PENC COMB MIN [[penc_comb_min]]
+
+Combinational Priority Encoder with Min Priority
+
+This module outputs the index of the lowest non-zero bit.
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors(LEN) | Inputs | Outputs
+
+| 3,4,5,6
+| *X* of 2^LEN^
+| *Y* of LEN
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: penc_comb_min
+
+<<<

@@ -1,0 +1,82 @@
+
+= Binary-BCD Conversion
+
+These modules perform conversion operations between binary integer and BCD integer.
+
+BCD to and from Binary conversions modules are supplied with binary sizes in mind. Modules with binary integer sizes of 8, 16, 24, and 32 bits are supplied. Each size class has two variants that differ in terms of their corresponding decimal sizes and overflow characteristics.
+
+[%unbreakable]
+[cols="1,2,1,1"]
+|===
+| Binary Length | BCD Length | BIN to BCD | BCD to BIN
+
+| *BLEN*
+| *DLEN* = ceil(log~10~(2^BLEN^))
+| No Overflow
+| *Overflow*
+
+| *BLEN*
+| *DLEN* = floor(log~10~(2^BLEN^))
+| *Overflow*
+| No Overflow
+|===
+
+For example, converting 8-bit binary to 3-digit BCD will not overflow, but converting 3-digit BCD to 8-bit binary may overflow. Meanwhile, converting 8 8-bit binary to 2-digit BCD may overflow, but converting backwards will not.
+
+For modules that implement overflowable conversions, an *ovf* output is supplied to indicate overflowing. When *ovf = HIGH*, conversion output *Y* is undefined.
+
+Modules are supplied with the following flavor notations: *<BLEN>B<DLEN>D*. These conversion modules always use unsigned numbers.
+
+<<<
+
+== Combinational Binary-BCD Conversion
+
+=== BCD2BIN COMB [[bcd2bin_comb]]
+
+Combinational BCD to BIN conversion
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors | Inputs | Outputs
+
+| 8B2D, 16B4D, 24B7D, 32B9D
+| *X* of BLEN
+| *Y* of DLEN*4
+
+| 8B3D, 16B5D, 24B8D, 32B10D
+| *X* of BLEN
+| *Y* of DLEN*4 +
+  *ovf* of 1
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: bcd2bin_comb
+
+=== BIN2BCD COMB [[bin2bcd_comb]]
+
+Combinational BCD to BIN conversion
+
+.Flavors Summary
+[%unbreakable]
+[cols="1,1,1"]
+|===
+| Flavors | Inputs | Outputs
+
+| 8B2D, 16B4D, 24B7D, 32B9D
+| *X* of BLEN
+| *Y* of DLEN*4 +
+  *ovf* of 1
+
+| 8B3D, 16B5D, 24B8D, 32B10D
+| *X* of BLEN
+| *Y* of DLEN*4
+|===
+
+.Complexity Summary
+[%unbreakable]
+// TABLE: bin2bcd_comb
+
+<<<
