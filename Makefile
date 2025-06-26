@@ -6,15 +6,17 @@ MKFILE_DIR := $(dir $(MKFILE_PATH))
 DOCKER_IMAGE = ghcr.io/yliu-hashed/sm-eda-bundle:latest
 DOCKER_MOUNT_ARGS := --mount type=bind,source="$(MKFILE_DIR)",target=/working
 DOCKER_ARGS := run --rm $(DOCKER_MOUNT_ARGS) $(DOCKER_IMAGE)
-CMD_RUN = docker $(DOCKER_ARGS) bash -l -c "cd working && timeout 500 $(1)"
+DOCKER_CMD_RUN = docker $(DOCKER_ARGS) bash -l -c "cd working && $(1)"
 
 EXTRACT_REPORT_FROM_BP = $(subst blueprints/,reports/,$(1))
 
+NUM_CORES = 4
+
 # Command Pallette
 PLACE_ARGS := --pack --double-sided --lz4-path /usr/bin/lz4
-SYNTH     = $(call CMD_RUN,yosys $(1) -q -s resources/script_$(2).ys -o tmp/$(3)_synth.json -D GEN $(4))
-PLACE     = $(call CMD_RUN,sm-eda flow      -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2)))
-PLACE_RAW = $(call CMD_RUN,sm-eda autoplace -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2)))
+SYNTH     = timeout 30m yosys $(1) -q -s resources/script_$(2).ys -o tmp/$(3)_synth.json -D GEN $(4)
+PLACE     = timeout  5m sm-eda flow      -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
+PLACE_RAW = timeout  5m sm-eda autoplace -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
 
 # --- BIN MATH COMB MODULES ----------------------------------------------------
 BIN_MATH_COMB_WIDTHS := 8 16 24 32
@@ -109,7 +111,7 @@ PENC_CN_SYNTH_FILES := $(foreach w,$(PENC_CN_WIDTHS),tmp/penc_comb_min_$(w)_synt
 PENC_CN_COMMAND = $(call SYNTH,-D LEN=$(1) -D MIN,comb,penc_comb_min_$(1),src/penc_comb.v)
 PENC_CN_EXTRACT_WIDTH = $(subst tmp/penc_comb_min_,,$(subst _synth.json,,$(1)))
 # --- BIN MATH SEQ MODULES -----------------------------------------------------
-BIN_MATH_SEQ_WIDTHS := 16 24 #32 64
+BIN_MATH_SEQ_WIDTHS := 16 24 32 64
 # MUL SEQ TRUNC
 MUL_ST_WIDTHS := $(BIN_MATH_SEQ_WIDTHS)
 MUL_ST_SYNTH_FILES := $(foreach w,$(MUL_ST_WIDTHS),tmp/mul_seq_trunc_$(w)_synth.json)
@@ -141,22 +143,22 @@ MEM_TIMER_ARGS_FROM_TYPE = --dbits $(call MEM_TIMER_TYPE_EXTRACT_WIDTH,$(1)) --a
 MEM_TIMER_1R1W_SYNTH_FILES := $(foreach t,$(MEM_TIMER_TYPES),tmp/mem_timer_1r1w_$(t)_synth.json)
 MEM_TIMER_1R1W_PORTS := --port w --port r
 MEM_TIMER_1R1W_EXTRACT_TYPE = $(subst tmp/mem_timer_1r1w_,,$(subst _synth.json,,$(1)))
-MEM_TIMER_1R1W_COMMAND = $(call CMD_RUN,sm-eda bram --timer --max-loop-delay 16 -q $(MEM_TIMER_1R1W_PORTS) $(call MEM_TIMER_ARGS_FROM_TYPE,$(1)) tmp/mem_timer_1r1w_$(1)_synth.json)
+MEM_TIMER_1R1W_COMMAND = sm-eda bram --timer --max-loop-delay 16 -q $(MEM_TIMER_1R1W_PORTS) $(call MEM_TIMER_ARGS_FROM_TYPE,$(1)) tmp/mem_timer_1r1w_$(1)_synth.json
 # MEM 2R1W
 MEM_TIMER_2R1W_SYNTH_FILES := $(foreach t,$(MEM_TIMER_TYPES),tmp/mem_timer_2r1w_$(t)_synth.json)
 MEM_TIMER_2R1W_PORTS := --port w --port r --port r
 MEM_TIMER_2R1W_EXTRACT_TYPE = $(subst tmp/mem_timer_2r1w_,,$(subst _synth.json,,$(1)))
-MEM_TIMER_2R1W_COMMAND = $(call CMD_RUN,sm-eda bram --timer --max-loop-delay 16 -q $(MEM_TIMER_2R1W_PORTS) $(call MEM_TIMER_ARGS_FROM_TYPE,$(1)) tmp/mem_timer_2r1w_$(1)_synth.json)
+MEM_TIMER_2R1W_COMMAND = sm-eda bram --timer --max-loop-delay 16 -q $(MEM_TIMER_2R1W_PORTS) $(call MEM_TIMER_ARGS_FROM_TYPE,$(1)) tmp/mem_timer_2r1w_$(1)_synth.json
 # MEM 3R1W
 MEM_TIMER_3R1W_SYNTH_FILES := $(foreach t,$(MEM_TIMER_TYPES),tmp/mem_timer_3r1w_$(t)_synth.json)
 MEM_TIMER_3R1W_PORTS := --port w --port r --port r --port r
 MEM_TIMER_3R1W_EXTRACT_TYPE = $(subst tmp/mem_timer_3r1w_,,$(subst _synth.json,,$(1)))
-MEM_TIMER_3R1W_COMMAND = $(call CMD_RUN,sm-eda bram --timer --max-loop-delay 16 -q $(MEM_TIMER_3R1W_PORTS) $(call MEM_TIMER_ARGS_FROM_TYPE,$(1)) tmp/mem_timer_3r1w_$(1)_synth.json)
+MEM_TIMER_3R1W_COMMAND = sm-eda bram --timer --max-loop-delay 16 -q $(MEM_TIMER_3R1W_PORTS) $(call MEM_TIMER_ARGS_FROM_TYPE,$(1)) tmp/mem_timer_3r1w_$(1)_synth.json
 # MEM 4R1W
 MEM_TIMER_4R1W_SYNTH_FILES := $(foreach t,$(MEM_TIMER_TYPES),tmp/mem_timer_4r1w_$(t)_synth.json)
 MEM_TIMER_4R1W_PORTS := --port w --port r --port r --port r --port r
 MEM_TIMER_4R1W_EXTRACT_TYPE = $(subst tmp/mem_timer_4r1w_,,$(subst _synth.json,,$(1)))
-MEM_TIMER_4R1W_COMMAND = $(call CMD_RUN,sm-eda bram --timer --max-loop-delay 16 -q $(MEM_TIMER_4R1W_PORTS) $(call MEM_TIMER_ARGS_FROM_TYPE,$(1)) tmp/mem_timer_4r1w_$(1)_synth.json)
+MEM_TIMER_4R1W_COMMAND = sm-eda bram --timer --max-loop-delay 16 -q $(MEM_TIMER_4R1W_PORTS) $(call MEM_TIMER_ARGS_FROM_TYPE,$(1)) tmp/mem_timer_4r1w_$(1)_synth.json
 # --- XOR MEM MODULES ----------------------------------------------------------
 MEM_XORDFF_WIDTHS := 8
 MEM_XORDFF_DEPTHS := 4 5 6 7
@@ -168,22 +170,22 @@ MEM_XORDFF_ARGS_FROM_TYPE = --dbits $(call MEM_TIMER_TYPE_EXTRACT_WIDTH,$(1)) --
 MEM_XORDFF_1R1W_SYNTH_FILES := $(foreach t,$(MEM_XORDFF_TYPES),tmp/mem_xordff_1r1w_$(t)_synth.json)
 MEM_XORDFF_1R1W_PORTS := --port w --port r
 MEM_XORDFF_1R1W_EXTRACT_TYPE = $(subst tmp/mem_xordff_1r1w_,,$(subst _synth.json,,$(1)))
-MEM_XORDFF_1R1W_COMMAND = $(call CMD_RUN,sm-eda bram --dff -q $(MEM_XORDFF_1R1W_PORTS) $(call MEM_XORDFF_ARGS_FROM_TYPE,$(1)) tmp/mem_xordff_1r1w_$(1)_synth.json)
+MEM_XORDFF_1R1W_COMMAND = sm-eda bram --dff -q $(MEM_XORDFF_1R1W_PORTS) $(call MEM_XORDFF_ARGS_FROM_TYPE,$(1)) tmp/mem_xordff_1r1w_$(1)_synth.json
 # MEM 2R1W
 MEM_XORDFF_2R1W_SYNTH_FILES := $(foreach t,$(MEM_XORDFF_TYPES),tmp/mem_xordff_2r1w_$(t)_synth.json)
 MEM_XORDFF_2R1W_PORTS := --port w --port r --port r
 MEM_XORDFF_2R1W_EXTRACT_TYPE = $(subst tmp/mem_xordff_2r1w_,,$(subst _synth.json,,$(1)))
-MEM_XORDFF_2R1W_COMMAND = $(call CMD_RUN,sm-eda bram --dff -q $(MEM_XORDFF_2R1W_PORTS) $(call MEM_XORDFF_ARGS_FROM_TYPE,$(1)) tmp/mem_xordff_2r1w_$(1)_synth.json)
+MEM_XORDFF_2R1W_COMMAND = sm-eda bram --dff -q $(MEM_XORDFF_2R1W_PORTS) $(call MEM_XORDFF_ARGS_FROM_TYPE,$(1)) tmp/mem_xordff_2r1w_$(1)_synth.json
 # MEM 3R1W
 MEM_XORDFF_3R1W_SYNTH_FILES := $(foreach t,$(MEM_XORDFF_TYPES),tmp/mem_xordff_3r1w_$(t)_synth.json)
 MEM_XORDFF_3R1W_PORTS := --port w --port r --port r --port r
 MEM_XORDFF_3R1W_EXTRACT_TYPE = $(subst tmp/mem_xordff_3r1w_,,$(subst _synth.json,,$(1)))
-MEM_XORDFF_3R1W_COMMAND = $(call CMD_RUN,sm-eda bram --dff -q $(MEM_XORDFF_3R1W_PORTS) $(call MEM_XORDFF_ARGS_FROM_TYPE,$(1)) tmp/mem_xordff_3r1w_$(1)_synth.json)
+MEM_XORDFF_3R1W_COMMAND = sm-eda bram --dff -q $(MEM_XORDFF_3R1W_PORTS) $(call MEM_XORDFF_ARGS_FROM_TYPE,$(1)) tmp/mem_xordff_3r1w_$(1)_synth.json
 # MEM 4R1W
 MEM_XORDFF_4R1W_SYNTH_FILES := $(foreach t,$(MEM_XORDFF_TYPES),tmp/mem_xordff_4r1w_$(t)_synth.json)
 MEM_XORDFF_4R1W_PORTS := --port w --port r --port r --port r --port r
 MEM_XORDFF_4R1W_EXTRACT_TYPE = $(subst tmp/mem_xordff_4r1w_,,$(subst _synth.json,,$(1)))
-MEM_XORDFF_4R1W_COMMAND = $(call CMD_RUN,sm-eda bram --dff -q $(MEM_XORDFF_4R1W_PORTS) $(call MEM_XORDFF_ARGS_FROM_TYPE,$(1)) tmp/mem_xordff_4r1w_$(1)_synth.json)
+MEM_XORDFF_4R1W_COMMAND = sm-eda bram --dff -q $(MEM_XORDFF_4R1W_PORTS) $(call MEM_XORDFF_ARGS_FROM_TYPE,$(1)) tmp/mem_xordff_4r1w_$(1)_synth.json
 # ------------------------------------------------------------------------------
 
 ALL_SYNTH_FILES := $(ADD_C2_SYNTH_FILES) $(ADD_C3_SYNTH_FILES) $(ADD_C4_SYNTH_FILES)
@@ -204,7 +206,7 @@ ALL_SYNTH_FILES += $(MEM_XORDFF_1R1W_SYNTH_FILES) $(MEM_XORDFF_2R1W_SYNTH_FILES)
 
 ALL_BLUEPRINTS_FILES = $(subst _synth,,$(subst tmp/,blueprints/,$(ALL_SYNTH_FILES)))
 
-all:  $(ALL_BLUEPRINTS_FILES)
+all: blueprint
 
 # --- BIN MATH COMB MODULES ----------------------------------------------------
 # --- ADD ----------------------------------------------------------------------
@@ -408,7 +410,15 @@ package.zip: $(ALL_BLUEPRINTS_FILES) DATASHEET.pdf
 
 package: package.zip
 
-synth: $(ALL_SYNTH_FILES)
+blueprint-local: $(ALL_BLUEPRINTS_FILES)
+
+blueprint: # open up a docker container and run the actual jobs
+	$(call DOCKER_CMD_RUN,make -j $(NUM_CORES) blueprint-local)
+
+synth-local: $(ALL_SYNTH_FILES)
+
+synth: # open up a docker container and run the actual jobs
+	$(call DOCKER_CMD_RUN,make -j $(NUM_CORES) synth-local)
 
 # build the datasheet
 datasheet: DATASHEET.pdf

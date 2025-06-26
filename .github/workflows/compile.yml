@@ -1,0 +1,46 @@
+name: Compile Package
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Setup
+        run: make setup
+      - name: Build Blueprints
+        run: make || make
+      - name: Setup Swift Toolchain
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.1"
+      - name: Setup Dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y asciidoctor ruby-dev nodejs npm
+      - name: Install Wavedrom via NPM
+        run: npm i wavedrom-cli -g
+      - name: Install Asciidoctor Diagram via Gem
+        run: sudo gem install asciidoctor-diagram asciidoctor-pdf
+      - name: Check Dependency
+        run: make try-deps
+      - name: Build Datasheet
+        run: make datasheet
+      - name: Assemble Package & Zip Archive
+        run: make package
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: package.zip
+      - name: Release Archive
+        if: github.event_name == 'release'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "package.zip"
+          allowUpdates: true
