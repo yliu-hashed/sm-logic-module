@@ -1,0 +1,16 @@
+# load modules is done via arguments
+
+hierarchy -top top
+
+# standard synthesis steps
+flatten
+proc; opt -full; clean
+memory; opt -full
+techmap; opt
+
+# optimize and map
+abc -liberty /flow/sm_cells.lib -script /flow/script.abc
+
+clean -purge
+
+# write out design to json is done via arguments
