@@ -1,3 +1,5 @@
+VERSION_TAG ?= UNKNOWN_OR_CUSTOM_VERSION
+
 # Get current directory
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
@@ -394,7 +396,7 @@ tmp/stat-generator:
 
 # run the stat generator to produce data-sheet asciidoc
 tmp/%.adoc: docs/%.adoc tmp/stat-generator
-	tmp/stat-generator $(MKFILE_DIR) $< $@
+	tmp/stat-generator $(MKFILE_DIR) $< $@ $(VERSION_TAG)
 
 # convert asciidoc into pdf
 ASCIIDOC_OPT := -a compress -r asciidoctor-diagram --theme resources/theme.yml

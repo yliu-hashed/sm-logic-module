@@ -18,6 +18,9 @@ import SMEDAResult
     @Argument(help: "Path to output filled file", completion: .file(extensions: [".adoc"]))
     var destinationFile: String
 
+    @Argument(help: "Tag of the current release version")
+    var versionTag: String
+
     mutating func run() throws {
         let fileManager = FileManager.default
         // get project and other file url
@@ -68,6 +71,7 @@ import SMEDAResult
         // discover and replace comments
         let tableMatcher = #/\/\/ TABLE:[ \t]*([\S]+)\n/#
         let modulePagesMatcher = #/\/\/ MODULE_PAGES\[(\d)\]:[ \t]*([\S]+)\n/#
+        let versionTagMatcher = #/!VERSION_TAG_HERE!/#
 
         try template.replace(tableMatcher) { (match)->String in
             let prefix = String(match.output.1)
@@ -82,6 +86,10 @@ import SMEDAResult
             let entries = try getReportEntries(for: prefix)
             if entries.isEmpty { return "" }
             return genAdocModuleReports(prefix: prefix, entries: entries, level: level)
+        }
+
+        template.replace(versionTagMatcher) { (match)->String in
+            return versionTag.trimmingCharacters(in: .whitespaces)
         }
 
         try template.write(to: docOutputURL, atomically: false, encoding: .utf8)

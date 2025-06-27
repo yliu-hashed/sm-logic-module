@@ -1,5 +1,5 @@
 
-= SM Logic Modules v0.1.0: Datasheet
+= SM Logic Modules !VERSION_TAG_HERE!: Datasheet
 :doctype: book
 :toc:
 :toclevels: 4
