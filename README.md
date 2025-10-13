@@ -1,9 +1,12 @@
+[![Scrap Mechanic](https://img.shields.io/badge/for%20game-scrap%20mechanic-orange?style=for-the-badge)](https://store.steampowered.com/app/387990/)
 
 # SM Logic Modules
 
 This repository provides many prebuilt logic blueprints for the game Scrap Mechanic that are too tedious to create by hand. These modules are designed for players who spend hours building intricate, logical creations. These prebuilt modules can empower Pro players to create complex designs.
 
 Disclaimer: This project is not associated with Axolot Games.
+
+![A big pile of logic](resources/images/logic-pile.jpg)
 
 # Module Types
 
