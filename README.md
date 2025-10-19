@@ -1,3 +1,4 @@
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/yliu-hashed/sm-logic-module/total?style=for-the-badge)](https://github.com/yliu-hashed/sm-logic-module/releases)
 [![Scrap Mechanic](https://img.shields.io/badge/for%20game-scrap%20mechanic-orange?style=for-the-badge)](https://store.steampowered.com/app/387990/)
 
 # SM Logic Modules
