@@ -407,8 +407,22 @@ DATASHEET.pdf: $(patsubst docs/%.adoc,tmp/%.adoc,$(wildcard docs/*.adoc)) resour
 package.zip: $(ALL_BLUEPRINTS_FILES) DATASHEET.pdf
 	zip -r package.zip blueprints DATASHEET.pdf
 
+# Testing ----------------------------------------------------------------------
+
+# obtain a list of test bench files
+TB_SRC_FILES := $(wildcard tb/tb_*.v)
+TB_SIM_FILES := $(foreach w,$(TB_SRC_FILES),tmp/sim/$(subst tb/,,$(subst .v,.vvp,$(w))))
+
+# compile test bench into vvp sim files
+tmp/sim/tb_%.vvp: tb/tb_%.v
+	iverilog -Wall -s tb -o $@ $^
+
+# run test bench one by one
+test: $(TB_SIM_FILES)
+	$(foreach f,$(TB_SIM_FILES),vvp -N $(f) || exit 1;)
+
 # Subcommands ------------------------------------------------------------------
-.PHONY: package synth setup clean cleantmp try-deps
+.PHONY: package test synth setup clean cleantmp try-deps
 
 package: package.zip
 
@@ -428,6 +442,7 @@ datasheet: DATASHEET.pdf
 # setup the empty folders ignored by github
 setup:
 	mkdir -p tmp
+	mkdir -p tmp/sim
 	mkdir -p blueprints
 	mkdir -p reports
 
@@ -436,6 +451,7 @@ clean:
 	rm -rf blueprints
 	rm -rf reports
 	mkdir -p tmp
+	mkdir -p tmp/sim
 	mkdir -p blueprints
 	mkdir -p reports
 	rm -rf stat-generator/.build
