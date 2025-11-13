@@ -7,14 +7,16 @@ module top(
   (* color = "white" *) input  START,
   (* color = "green" *) output DONE,
 
-  input  [`LEN-1:0] A,
-  input  [`LEN-1:0] B,
-  output [`LEN-1:0] Y
+  input  [LEN-1:0] A,
+  input  [LEN-1:0] B,
+  output [LEN-1:0] Y
   );
 
-  reg [`LEN-1:0] argA = 0;
-  reg [`LEN-1:0] argB = 0;
-  reg [`LEN-1:0] tmp = 0;
+  parameter LEN = `LEN;
+
+  reg [LEN-1:0] argA = 0;
+  reg [LEN-1:0] argB = 0;
+  reg [LEN-1:0] tmp = 0;
   assign Y = tmp;
 
   wire done = !argA || !argB;
