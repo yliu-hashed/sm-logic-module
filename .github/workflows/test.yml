@@ -1,0 +1,21 @@
+name: Test
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  test_hdl_tb:
+    runs-on: ubuntu-latest
+    steps:
+      - name:
+        run: |
+          sudo apt update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y iverilog
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Setup
+        run: make setup
+      - name: Run Tests
+        run: make test
