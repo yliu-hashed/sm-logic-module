@@ -61,7 +61,7 @@ module tb;
 
       // check result
       if (Y !== y) begin
-        $display("[FAIL] mismatch result 0x%4h from expectation 0x%4h after %d cycles", Y, y, wait_count);
+        $display("[FAIL] mismatch result 0x%4h from expectation 0x%4h after %0d cycles", Y, y, wait_count);
         $stop;
       end
     end
