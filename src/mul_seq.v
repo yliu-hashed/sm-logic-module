@@ -15,26 +15,49 @@ module top(
   );
 
   parameter LEN = `LEN;
+  parameter RDX = 4;
+  localparam DIGIT = LEN / RDX;
 
-  reg [LEN-1:0] argA = 0;
-  reg [LEN-1:0] argB = 0;
-  reg [LEN-1:0] tmp = 0;
+  reg  [DIGIT-1:0] [RDX-1:0] argA = 0;
+  reg  [DIGIT-1:0] [RDX-1:0] argB = 0;
+  reg  [DIGIT-1:0] [RDX-1:0] tmp = 0;
+  reg  [DIGIT-1:1] [RDX-1:0] rcarry = 0;
+
+  wire [DIGIT-1:0] [RDX-1:0] carry;
+  assign carry[DIGIT-1:1] = rcarry;
+  assign carry[0] = 0;
+
+  wire [DIGIT  :1] [RDX-1:0] carry_nx;
+  wire [DIGIT-1:0] [RDX-1:0] tmp_nx;
+
+  wire [RDX-1:0] nibble = argB[0];
+  genvar i;
+  generate
+    for (i = 0; i < DIGIT; i = i + 1) begin
+      wire [RDX-1:0] lo;
+      wire [RDX-1:0] hi;
+      assign { hi, lo } = argA[i] * nibble + tmp[i] + carry[i];
+      assign tmp_nx[i] = lo;
+      assign carry_nx[i+1] = hi;
+    end
+  endgenerate
+
   assign Y = tmp;
 
-  wire done = !argA || !argB;
+  wire done = (!(|argA) || !(|argB)) && !(|rcarry);
   assign DONE = done;
-
-  wire [3:0] nibble = argB[3:0];
 
   always @(posedge CLK) begin
     if (START) begin
       argA <= A;
       argB <= B;
       tmp <= 0;
+      rcarry <= 0;
     end else begin
-      tmp <= tmp + argA * nibble;
-      argA <= argA << 4;
-      argB <= argB >> 4;
+      tmp <= tmp_nx;
+      rcarry <= carry_nx[DIGIT-1:1];
+      argA <= argA << RDX;
+      argB <= argB >> RDX;
     end
   end
 
