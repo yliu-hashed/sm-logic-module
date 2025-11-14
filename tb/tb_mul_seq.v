@@ -73,6 +73,8 @@ module tb;
   wire [LEN-1:0] hash_y = hash_a * hash_b;
 
   initial begin
+    $dumpfile("tmp/sim/trace.vcd");
+    $dumpvars(0, tb);
     for (i = 0; i < 100; i = i + 1) begin
       work ( hash_a, hash_b, hash_y, 16 );
     end
