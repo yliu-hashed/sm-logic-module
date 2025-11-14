@@ -1,3 +1,5 @@
+`default_nettype none
+
 `ifndef GEN
 `define I_LEN 16
 `define O_LEN 16

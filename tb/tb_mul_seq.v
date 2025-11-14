@@ -1,3 +1,5 @@
+`default_nettype none
+
 // Test the correctness of the mul_seq.v module
 `include "src/mul_seq.v"
 

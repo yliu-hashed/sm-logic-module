@@ -1,3 +1,5 @@
+`default_nettype none
+
 `include "src/bcd_size.vh"
 
 `ifndef GEN
