@@ -446,12 +446,13 @@ package.zip: $(ALL_BLUEPRINTS_FILES) DATASHEET.pdf
 # Testing ----------------------------------------------------------------------
 
 # obtain a list of test bench files
+SRC_FILES := $(wildcard src/*.v)
 TB_SRC_FILES := $(wildcard tb/tb_*.v)
 TB_SIM_FILES := $(foreach w,$(TB_SRC_FILES),tmp/sim/$(subst tb/,,$(subst .v,.vvp,$(w))))
 
 # compile test bench into vvp sim files
-tmp/sim/tb_%.vvp: tb/tb_%.v
-	iverilog -Wall -s tb -o $@ $^
+tmp/sim/tb_%.vvp: tb/tb_%.v $(SRC_FILES)
+	iverilog -Wall -s tb -o $@ $<
 
 # run test bench one by one
 test: $(TB_SIM_FILES)
