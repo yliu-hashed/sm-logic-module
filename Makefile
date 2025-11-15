@@ -57,7 +57,7 @@ tmp/add_comb_4i_%_synth.json: src/add_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/add_comb_%.json: tmp/add_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- MUL ----------------------------------------------------------------------
 # Synthesis
@@ -100,7 +100,7 @@ tmp/mul_comb_full_mixed_%_synth.json: src/mul_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/mul_comb_%.json: tmp/mul_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- DIV ----------------------------------------------------------------------
 # Synthesis
@@ -125,7 +125,7 @@ tmp/div_comb_unsigned_%_synth.json: src/div_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/div_comb_%.json: tmp/div_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- REM ----------------------------------------------------------------------
 # Synthesis
@@ -150,7 +150,7 @@ tmp/rem_comb_unsigned_%_synth.json: src/rem_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/rem_comb_%.json: tmp/rem_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- SQRT ---------------------------------------------------------------------
 # Synthesis
@@ -166,7 +166,7 @@ tmp/sqrt_comb_%_synth.json: src/sqrt_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/sqrt_comb_%.json: tmp/sqrt_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- SQR ----------------------------------------------------------------------
 # Synthesis
@@ -200,7 +200,7 @@ tmp/sqr_comb_full_unsigned_%_synth.json: src/sqr_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/sqr_comb_%.json: tmp/sqr_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- CMP ----------------------------------------------------------------------
 # Synthesis
@@ -216,7 +216,7 @@ tmp/cmp_comb_%_synth.json: src/cmp_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/cmp_comb_%.json: tmp/cmp_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- PRIORITY-ENCODER ---------------------------------------------------------
 # Synthesis
@@ -241,7 +241,7 @@ tmp/penc_comb_min_%_synth.json: src/penc_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/penc_comb_%.json: tmp/penc_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- BIN MATH SEQ MODULES -----------------------------------------------------
 # --- MUL ----------------------------------------------------------------------
@@ -258,7 +258,7 @@ tmp/mul_seq_trunc_%_synth.json: src/mul_seq.v resources/script_seq.ys
 
 # Conversion & Implementation
 blueprints/mul_seq_%.json: tmp/mul_seq_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- DIV ----------------------------------------------------------------------
 # Synthesis
@@ -274,7 +274,7 @@ tmp/div_seq_unsigned_%_synth.json: src/div_seq.v resources/script_seq.ys
 
 # Conversion & Implementation
 blueprints/div_seq_%.json: tmp/div_seq_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- BCD COMB MODULES ---------------------------------------------------------
 BIN_BCD_WIDTHS := 8B2D 8B3D 16B4D 16B5D 24B7D 24B8D 32B9D 32B10D
@@ -291,7 +291,7 @@ tmp/bcd2bin_comb_%_synth.json: src/bcd2bin_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/bcd2bin_comb_%.json: tmp/bcd2bin_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- BIN2BCD ------------------------------------------------------------------
 # Synthesis
@@ -306,7 +306,7 @@ tmp/bin2bcd_comb_%_synth.json: src/bin2bcd_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/bin2bcd_comb_%.json: tmp/bin2bcd_comb_%_synth.json
-	$(call PLACE,$?,$@)
+	$(call PLACE,$^,$@)
 
 # --- MEM TIMER MODULES --------------------------------------------------------
 # Synthesis
@@ -355,7 +355,7 @@ tmp/mem_timer_4r1w_%_synth.json:
 
 # Conversion & Implementation
 blueprints/mem_timer_%.json: tmp/mem_timer_%_synth.json
-	$(call PLACE_RAW,$?,$@)
+	$(call PLACE_RAW,$^,$@)
 
 # --- MEM XORDFF MODULES -------------------------------------------------------
 MEM_XORDFF_WIDTHS := 8
@@ -404,7 +404,7 @@ tmp/mem_xordff_4r1w_%_synth.json:
 
 # Conversion & Implementation
 blueprints/mem_xordff_%.json: tmp/mem_xordff_%_synth.json
-	$(call PLACE_RAW,$?,$@)
+	$(call PLACE_RAW,$^,$@)
 
 # ------------------------------------------------------------------------------
 
