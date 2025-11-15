@@ -15,10 +15,12 @@ EXTRACT_REPORT_FROM_BP = $(subst blueprints/,reports/,$(1))
 NUM_CORES = 4
 
 # Command Pallette
-PLACE_ARGS := --pack --double-sided --lz4-path /usr/bin/lz4
+PLACE_LZ4_ARGS := --lz4-path /usr/bin/lz4
+PLACE_ARGS := --pack --double-sided $(PLACE_LZ4_ARGS)
 SYNTH     = timeout 30m yosys $(1) -q -s resources/script_$(2).ys -o tmp/$(3)_synth.json -D GEN $(4)
 PLACE     = timeout  5m sm-eda flow      -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
 PLACE_RAW = timeout  5m sm-eda autoplace -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
+PLACE_PLAN = timeout  5m sm-eda place -q $(PLACE_LZ4_ARGS) -c $(1) $(2) $(3) -R $(call EXTRACT_REPORT_FROM_BP,$(3))
 
 # Common Sizes
 BIN_MATH_COMB_WIDTHS := 8 16 24 32
@@ -406,6 +408,24 @@ tmp/mem_xordff_4r1w_%_synth.json:
 blueprints/mem_xordff_%.json: tmp/mem_xordff_%_synth.json
 	$(call PLACE_RAW,$^,$@)
 
+# --- DISPLAY MODULES ----------------------------------------------------------
+
+DISP_TYPES := ascii
+DISP_BP_FILES := $(foreach t,$(DISP_TYPES),blueprints/disp_$(t).json)
+
+# $(call SYNTH,-D MODE_$(1),comb,bcd2bin_comb_$(1),src/bcd2bin_comb.v)
+DISP_COMMAND = $(call SYNTH,,comb,disp_$(1),src/disp_$(1).v)
+DISP_EXTRACT_TYPE = $(subst tmp/disp_,,$(subst _model.json,,$(subst _synth.json,,$(1))))
+
+tmp/disp_%_synth.json: src/disp_%.v
+	$(call DISP_COMMAND,$(call DISP_EXTRACT_TYPE,$@))
+
+tmp/disp_%_model.json: tmp/disp_%_synth.json
+	sm-eda ys2sm -q $^ $@
+
+blueprints/disp_%.json: tmp/disp_%_model.json layouts/disp_%_layout.json
+	$(call PLACE_PLAN,$(word 2,$^),$<,$@)
+
 # ------------------------------------------------------------------------------
 
 ALL_BLUEPRINTS_FILES := $(ADD_C2_BP_FILES) $(ADD_C3_BP_FILES) $(ADD_C4_BP_FILES)
@@ -423,6 +443,7 @@ ALL_BLUEPRINTS_FILES += $(BCD2BIN_C_BP_FILES) $(BIN2BCD_C_BP_FILES)
 
 ALL_BLUEPRINTS_FILES += $(MEM_TIMER_1R1W_BP_FILES) $(MEM_TIMER_2R1W_BP_FILES) $(MEM_TIMER_3R1W_BP_FILES) $(MEM_TIMER_4R1W_BP_FILES)
 ALL_BLUEPRINTS_FILES += $(MEM_XORDFF_1R1W_BP_FILES) $(MEM_XORDFF_2R1W_BP_FILES) $(MEM_XORDFF_3R1W_BP_FILES) $(MEM_XORDFF_4R1W_BP_FILES)
+ALL_BLUEPRINTS_FILES += $(DISP_BP_FILES)
 
 # Make Report ------------------------------------------------------------------
 # build the stat generator

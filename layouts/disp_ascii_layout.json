@@ -1,0 +1,59 @@
+{
+  "defaultInputDevice" : null,
+  "facade" : true,
+  "surfaces" : [
+    {
+      "defaultInputDevice" : null,
+      "directionLeft" : 2,
+      "directionUp" : 3,
+      "name" : "Display Surface",
+      "ports" : [
+        "disp_o[34:30]",
+        "disp_o[29:25]",
+        "disp_o[24:20]",
+        "disp_o[19:15]",
+        "disp_o[14:10]",
+        "disp_o[ 9: 5]",
+        "disp_o[ 4: 0]"
+      ],
+      "position" : {
+        "x" : -1,
+        "y" : 0,
+        "z" : 0
+      }
+    },
+    {
+      "defaultInputDevice" : null,
+      "directionLeft" : 3,
+      "directionUp" : -2,
+      "name" : "Input Ports",
+      "ports" : [
+        "byte_i[6:0]"
+      ],
+      "position" : {
+        "x" : 0,
+        "y" : 5,
+        "z" : 0
+      }
+    }
+  ],
+  "volumes" : [
+    {
+      "fillDirectionPriority" : [
+        1,
+        2,
+        3
+      ],
+      "position" : {
+        "x" : 0,
+        "y" : 0,
+        "z" : 0
+      },
+      "size" : {
+        "x" : 1000000,
+        "y" : 5,
+        "z" : 7
+      }
+    }
+  ]
+}
