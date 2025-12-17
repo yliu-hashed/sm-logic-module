@@ -152,4 +152,6 @@ include::bcd_conv.adoc[]
 
 include::mem.adoc[]
 
+include::disp.adoc[]
+
 include::table.adoc[]

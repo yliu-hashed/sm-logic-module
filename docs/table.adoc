@@ -18,6 +18,8 @@ Use the previous sections to find the modules you want, and go to this section t
 
 // MODULE_PAGES[3]: comp_comb
 
+// MODULE_PAGES[3]: disp_ascii
+
 // MODULE_PAGES[3]: div_comb_signed
 // MODULE_PAGES[3]: div_comb_unsigned
 // MODULE_PAGES[3]: div_seq_unsigned
