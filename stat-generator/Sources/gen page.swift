@@ -10,7 +10,12 @@ func genAdocModuleReports(prefix: String, entries: borrowing [ReportEntry], leve
     var result: String = ""
     // print each stat
     for entry in entries.lazy {
-        result += genAdocModuleReport(prefix: prefix, name: "\(prefix)_\(entry.flavor)", report: entry.report, level: level)
+        result += genAdocModuleReport(
+            prefix: prefix,
+            name: name(prefix: prefix, flavor: entry.flavor),
+            report: entry.report,
+            level: level
+        )
         result += "<<<\n\n"
     }
     return result
@@ -52,12 +57,12 @@ private func genPortDepthTable(delayTable: [String: Int]) -> String {
 }
 
 private func genAdocModuleReport(prefix: String, name: String, report: borrowing FullSynthesisReport, level: Int) -> String {
-    let uppercased = name.uppercased()
-    let prefixLowercased = prefix.lowercased()
+    let specificTag = specificTag(for: name)
+    let sectionTag = sectionTag(for: prefix)
 
     var result: String = ""
-    result += "\(String(repeating: "=", count: level)) \(uppercased) [[\(uppercased)]]\n\n"
-    result += "<<\(prefixLowercased), Go Back to \(prefixLowercased.uppercased())>> Overview\n\n"
+    result += "\(String(repeating: "=", count: level)) \(name.uppercased()) [[\(specificTag)]]\n\n"
+    result += "<<\(sectionTag), Go Back to \(prefix.uppercased())>> Overview\n\n"
     result += ".Characteristics\n[%unbreakable]\n"
     result += genSpecificTable(report: report)
     result += ".Inputs Ports Depths *T~pdi~(P)*\n[%unbreakable]\n"

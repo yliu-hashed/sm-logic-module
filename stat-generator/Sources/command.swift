@@ -77,7 +77,7 @@ import SMEDAResult
             let prefix = String(match.output.1)
             let entries = try getReportEntries(for: prefix)
             if entries.isEmpty { return "N/A\n" }
-            return genSimpleTable(prefix: prefix, entries: entries)
+            return genAdocOverviewTable(prefix: prefix, entries: entries)
         }
 
         try template.replace(modulePagesMatcher) { (match)->String in
