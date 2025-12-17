@@ -71,7 +71,7 @@ Assert the `START` signal in the same cycle as `A` and `B` to begin a multiplica
 [wavedrom,,svg,scale=75%]
 ....
 { signal: [
-  {name: 'CLK'  , wave: 'xd0P|P.x'},
+  {name: 'CLK'  , wave: 'P...|P..'},
   ['IN',
     {name: 'A'    , wave: 'x.3x|...', data: ['a']},
     {name: 'B'    , wave: 'x.3x|...', data: ['b']},
