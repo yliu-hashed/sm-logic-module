@@ -20,7 +20,7 @@ These signals' names are prefixed with their index. For example, `0ADDR` means t
 Both types of memory devices behave like banks of muxed registers. This means that Writes are *synchronized to the clock*, and reads are *combinational*. This standardized behavior allows the two types of devices to be used interchangeably.
 
 .Write Observed by Reading on Port 1
-[wavedrom,,svg]
+[wavedrom,,svg,scale=75%]
 ....
 { signal: [
   {name: 'CLK', wave: 'l...H....'},
@@ -40,7 +40,7 @@ Both types of memory devices behave like banks of muxed registers. This means th
 ....
 
 .Read On Port 1
-[wavedrom,,svg]
+[wavedrom,,svg,scale=75%]
 ....
 { signal: [
   {node: '..I.O..'},

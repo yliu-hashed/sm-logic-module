@@ -52,7 +52,7 @@ Generally, *inputs are green* and *outputs are white* for large and unambiguous 
 
 ==== Combinational
 
-[wavedrom,,svg]
+[wavedrom,,svg,scale=75%]
 ....
 { signal: [
   {name: 'IN' , wave: 'x7....x.', data: ['valid data'], node: '.A'},
@@ -87,7 +87,7 @@ If any number of combinational modules are connected in a chain. The critical de
 
 ==== Sequential
 
-[wavedrom,,svg]
+[wavedrom,,svg,scale=75%]
 ....
 { signal: [
   {name: 'CLK', wave: 'l...H...'},
