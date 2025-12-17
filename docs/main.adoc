@@ -26,7 +26,8 @@ The generated blueprints are licensed under https://creativecommons.org/public-d
 == Specifications
 
 === Module Specifications
-image::../resources/images/module_shape.png[Module Shape]
+
+image::../resources/images/module_shape.png[Module Shape, scale=30%]
 
 ==== Port Location
 
