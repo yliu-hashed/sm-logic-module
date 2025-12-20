@@ -16,7 +16,7 @@ Use the previous sections to find the modules you want, and go to this section t
 // MODULE_PAGES[3]: bcd2bin_comb
 // MODULE_PAGES[3]: bin2bcd_comb
 
-// MODULE_PAGES[3]: comp_comb
+// MODULE_PAGES[3]: cmp_comb
 
 // MODULE_PAGES[3]: disp_ascii
 

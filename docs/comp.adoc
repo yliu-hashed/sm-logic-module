@@ -1,9 +1,9 @@
 
-= Comparison [[comp]]
+= Comparison [[cmp]]
 
 These modules perform comparison operations on binary integer inputs.
 
-== COMP COMB [[comp_comb]]
+== CMP COMB [[cmp_comb]]
 
 Combinational Comparison
 
