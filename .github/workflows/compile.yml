@@ -30,7 +30,7 @@ jobs:
       - name: Check Dependency
         run: make try-deps
       - name: Build Datasheet
-        run: make datasheet VERSION_TAG="${{ github.ref_name }}"
+        run: make datasheet-docker VERSION_TAG="${{ github.ref_name }}"
       - name: Assemble Package & Zip Archive
         run: make package
       - name: Upload Artifact

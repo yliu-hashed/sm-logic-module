@@ -480,16 +480,16 @@ test: $(TB_SIM_FILES)
 	$(foreach f,$(TB_SIM_FILES),vvp -N $(f) || exit 1;)
 
 # Subcommands ------------------------------------------------------------------
-.PHONY: package test synth setup clean cleantmp try-deps
+.PHONY: blueprint blueprint-docker package test synth setup clean cleantmp try-deps
 
 all: blueprint
 
 package: package.zip
 
-blueprint-local: $(ALL_BLUEPRINTS_FILES)
+blueprint: $(ALL_BLUEPRINTS_FILES)
 
-blueprint: # open up a docker container and run the actual jobs
-	$(call DOCKER_CMD_RUN,make -j $(NUM_CORES) blueprint-local)
+blueprint-docker: # open up a docker container and run the actual jobs
+	$(call DOCKER_CMD_RUN,make -j $(NUM_CORES) blueprint)
 
 # build the datasheet
 datasheet: DATASHEET.pdf
