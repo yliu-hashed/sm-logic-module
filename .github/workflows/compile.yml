@@ -2,7 +2,7 @@ name: Compile Package
 on:
   workflow_dispatch:
   release:
-    types: [created]
+    types: [prereleased, published]
 jobs:
   build:
     runs-on: ubuntu-latest
