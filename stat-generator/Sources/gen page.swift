@@ -73,14 +73,14 @@ private func genAdocModuleReport(prefix: String, name: String, report: borrowing
     let sorted = report.placementReport.surfaces.sorted(by: { $0.key < $1.key })
     for (name, surface) in sorted {
         result += ".\(name) Surface\n"
-        result += genAdocBitfield(from: surface, width: report.placementReport.width)
+        result += genAdocBitfield(from: surface)
     }
     return result
 }
 
-private func genAdocBitfield(from portMatrix: borrowing PlacementReport.PortSurface, width: Int) -> String {
+private func genAdocBitfield(from portMatrix: borrowing PlacementReport.PortSurface) -> String {
     var result = "[wavedrom,,svg]\n....\n"
-    result += genWavedromBitfield(from: portMatrix, width: width)
+    result += genWavedromBitfield(from: portMatrix)
     result += "....\n\n"
     return result
 }

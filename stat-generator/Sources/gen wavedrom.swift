@@ -5,8 +5,18 @@
 
 import SMEDAResult
 
-func genWavedromBitfield(from portMatrix: borrowing PlacementReport.PortSurface, width: Int) -> String {
+func genWavedromBitfield(from portMatrix: borrowing PlacementReport.PortSurface) -> String {
     let height = portMatrix.count
+    // calculate width
+    var width: Int = 0
+    for portLine in portMatrix.lazy {
+        for port in portLine {
+            let length = abs(port.msb - port.lsb) + 1
+            width = max(length + port.offset, width)
+        }
+    }
+
+    // print bitfield
 
     var result = "{ reg: [\n"
 
@@ -36,13 +46,16 @@ func genWavedromBitfield(from portMatrix: borrowing PlacementReport.PortSurface,
     for portLine in portMatrix.lazy {
         var index: Int = 0
         for port in portLine {
+            // print space if there is a gap
             if port.offset > index {
                 emit(space: port.offset - index)
             }
+            // print field
             let length = abs(port.msb - port.lsb) + 1
             emit(msb: port.msb, lsb: port.lsb, name: port.name)
             index = port.offset + length
         }
+        // print end filler if shorter than width
         if width > index {
             emit(space: width - index)
         }
