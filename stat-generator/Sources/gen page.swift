@@ -70,7 +70,8 @@ private func genAdocModuleReport(prefix: String, name: String, report: borrowing
     result += ".Outputs Ports Depths *T~pdo~(P)*\n[%unbreakable]\n"
     result += genPortDepthTable(delayTable: report.timingReport.outputTiming)
 
-    for (name, surface) in report.placementReport.surfaces {
+    let sorted = report.placementReport.surfaces.sorted(by: { $0.key < $1.key })
+    for (name, surface) in sorted {
         result += ".\(name) Surface\n"
         result += genAdocBitfield(from: surface, width: report.placementReport.width)
     }
