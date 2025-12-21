@@ -18,9 +18,9 @@ NUM_CORES = 4
 PLACE_LZ4_ARGS := --lz4-path /usr/bin/lz4
 PLACE_ARGS := --pack --double-sided $(PLACE_LZ4_ARGS)
 SYNTH     = timeout 30m yosys $(1) -q -s resources/script_$(2).ys -o tmp/$(3)_synth.json -D GEN $(4)
-PLACE     = timeout  5m sm-eda flow      -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
-PLACE_RAW = timeout  5m sm-eda autoplace -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
-PLACE_PLAN = timeout  5m sm-eda place -q $(PLACE_LZ4_ARGS) -c $(1) $(2) $(3) -R $(call EXTRACT_REPORT_FROM_BP,$(3))
+FLOW      = timeout  5m sm-eda flow      -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
+AUTOPLACE = timeout  5m sm-eda autoplace -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
+PLACE     = timeout  5m sm-eda place -q $(PLACE_LZ4_ARGS) -c $(1) $(2) $(3) -R $(call EXTRACT_REPORT_FROM_BP,$(3))
 
 # Common Sizes
 BIN_MATH_COMB_WIDTHS := 8 16 24 32
@@ -59,7 +59,7 @@ tmp/add_comb_4i_%_synth.json: src/add_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/add_comb_%.json: tmp/add_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- MUL ----------------------------------------------------------------------
 # Synthesis
@@ -102,7 +102,7 @@ tmp/mul_comb_full_mixed_%_synth.json: src/mul_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/mul_comb_%.json: tmp/mul_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- DIV ----------------------------------------------------------------------
 # Synthesis
@@ -127,7 +127,7 @@ tmp/div_comb_unsigned_%_synth.json: src/div_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/div_comb_%.json: tmp/div_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- REM ----------------------------------------------------------------------
 # Synthesis
@@ -152,7 +152,7 @@ tmp/rem_comb_unsigned_%_synth.json: src/rem_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/rem_comb_%.json: tmp/rem_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- SQRT ---------------------------------------------------------------------
 # Synthesis
@@ -168,7 +168,7 @@ tmp/sqrt_comb_%_synth.json: src/sqrt_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/sqrt_comb_%.json: tmp/sqrt_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- SQR ----------------------------------------------------------------------
 # Synthesis
@@ -202,7 +202,7 @@ tmp/sqr_comb_full_unsigned_%_synth.json: src/sqr_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/sqr_comb_%.json: tmp/sqr_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- CMP ----------------------------------------------------------------------
 # Synthesis
@@ -218,7 +218,7 @@ tmp/cmp_comb_%_synth.json: src/cmp_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/cmp_comb_%.json: tmp/cmp_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- PRIORITY-ENCODER ---------------------------------------------------------
 # Synthesis
@@ -243,7 +243,7 @@ tmp/penc_comb_min_%_synth.json: src/penc_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/penc_comb_%.json: tmp/penc_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- BIN MATH SEQ MODULES -----------------------------------------------------
 # --- MUL ----------------------------------------------------------------------
@@ -260,7 +260,7 @@ tmp/mul_seq_trunc_%_synth.json: src/mul_seq.v resources/script_seq.ys
 
 # Conversion & Implementation
 blueprints/mul_seq_%.json: tmp/mul_seq_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- DIV ----------------------------------------------------------------------
 # Synthesis
@@ -276,7 +276,7 @@ tmp/div_seq_unsigned_%_synth.json: src/div_seq.v resources/script_seq.ys
 
 # Conversion & Implementation
 blueprints/div_seq_%.json: tmp/div_seq_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- BCD COMB MODULES ---------------------------------------------------------
 BIN_BCD_WIDTHS := 8B2D 8B3D 16B4D 16B5D 24B7D 24B8D 32B9D 32B10D
@@ -293,7 +293,7 @@ tmp/bcd2bin_comb_%_synth.json: src/bcd2bin_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/bcd2bin_comb_%.json: tmp/bcd2bin_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- BIN2BCD ------------------------------------------------------------------
 # Synthesis
@@ -308,7 +308,7 @@ tmp/bin2bcd_comb_%_synth.json: src/bin2bcd_comb.v resources/script_comb.ys
 
 # Conversion & Implementation
 blueprints/bin2bcd_comb_%.json: tmp/bin2bcd_comb_%_synth.json
-	$(call PLACE,$^,$@)
+	$(call FLOW,$^,$@)
 
 # --- MEM TIMER MODULES --------------------------------------------------------
 # Synthesis
@@ -357,7 +357,7 @@ tmp/mem_timer_4r1w_%_synth.json:
 
 # Conversion & Implementation
 blueprints/mem_timer_%.json: tmp/mem_timer_%_synth.json
-	$(call PLACE_RAW,$^,$@)
+	$(call AUTOPLACE,$^,$@)
 
 # --- MEM XORDFF MODULES -------------------------------------------------------
 MEM_XORDFF_WIDTHS := 8
@@ -406,7 +406,7 @@ tmp/mem_xordff_4r1w_%_synth.json:
 
 # Conversion & Implementation
 blueprints/mem_xordff_%.json: tmp/mem_xordff_%_synth.json
-	$(call PLACE_RAW,$^,$@)
+	$(call AUTOPLACE,$^,$@)
 
 # --- DISPLAY MODULES ----------------------------------------------------------
 
@@ -424,7 +424,7 @@ tmp/disp_%_model.json: tmp/disp_%_synth.json
 	sm-eda ys2sm -q $^ $@
 
 blueprints/disp_%.json: tmp/disp_%_model.json layouts/disp_%_layout.json
-	$(call PLACE_PLAN,$(word 2,$^),$<,$@)
+	$(call PLACE,$(word 2,$^),$<,$@)
 
 # ------------------------------------------------------------------------------
 
