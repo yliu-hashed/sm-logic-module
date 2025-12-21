@@ -47,6 +47,27 @@ Generally, *inputs are green* and *outputs are white* for large and unambiguous 
 * *White*: (in input) the `START` signal for sequential modules
 * *Yellow & Red*: various carry, overflow, or otherwise caution signals
 
+==== Size
+
+Most modules will be generated as cuboids. For each module, the smallest size that fits will be chosen to place the blueprint.
+
+.Available Sizes
+[cols="2,1,1,1,1,1,1,1,1,1"]
+|===
+| Width (Y)  | 8  | 8  | 16 | 16 | 16 | 16 | 16 | 16 | 16
+| Depth (X)  | 8  | 16 | 16 | 24 | 32 | 40 | 48 | 56 | 64
+| Height (Z) | 8  | 16 | 16 | 24 | 32 | 32 | 32 | 32 | 32
+|===
+
+image::../resources/images/module_sizes.png[Module Sizes, scale=30%]
+
+When a module cannot use the entirety of the available space, it will be shorter.
+
+Special modules, like <<DISP_ASCII>>, use custom placement that does not follow this specification. When that happens, the sizing used during placement will always be described within the respective overview of the module. For every module, the exact size is always listed on the module's respective page.
+
+[TIP]
+The sizes are chosen specifically to allow the tiling module to be tiled nicely. The widths and depth are always multiples of 8, and the height will never exceed the depth or 32, whichever is smaller. This allows smaller modules to be tiled around larger modules both horizontally and vertically.
+
 <<<
 
 === Timing Specification
