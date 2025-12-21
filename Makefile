@@ -16,7 +16,8 @@ NUM_CORES = 4
 
 # Command Pallette
 PLACE_LZ4_ARGS := --lz4-path /usr/bin/lz4
-PLACE_ARGS := --pack --double-sided $(PLACE_LZ4_ARGS)
+PLACE_SIZE_ARGS := -s 8x6x8 -s 8x14x16 -s 16x14x16 -s 16x22x24 -s 16x30x32 -s 16x38x32 -s 16x46x32 -s 16x54x32 -s 16x62x1000000
+PLACE_ARGS := --pack --double-sided $(PLACE_SIZE_ARGS) $(PLACE_LZ4_ARGS)
 SYNTH     = timeout 30m yosys $(1) -q -s resources/script_$(2).ys -o tmp/$(3)_synth.json -D GEN $(4)
 FLOW      = timeout  5m sm-eda flow      -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
 AUTOPLACE = timeout  5m sm-eda autoplace -q $(PLACE_ARGS) $(1) $(2) -R $(call EXTRACT_REPORT_FROM_BP,$(2))
