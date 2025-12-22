@@ -1,8 +1,19 @@
-name: Compile Package
+name: Compile and Release Package
 on:
   workflow_dispatch:
-  release:
-    types: [prereleased, published]
+    inputs:
+      commit_sha:
+        description: "Which commit to create compile."
+        required: true
+        type: string
+      release:
+        description: "Release to github (true), or just build to artifact (false)"
+        required: true
+        type: boolean
+      version_name:
+        description: "The version for the release."
+        required: true
+        type: string
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,10 +22,12 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.commit_sha }}
       - name: Setup
         run: make setup
       - name: Build Blueprints
-        run: make || make
+        run: make blueprint-docker || make blueprint-docker
       - name: Setup Swift Toolchain
         uses: swift-actions/setup-swift@v2
         with:
@@ -30,7 +43,7 @@ jobs:
       - name: Check Dependency
         run: make try-deps
       - name: Build Datasheet
-        run: make datasheet-docker VERSION_TAG="${{ github.ref_name }}"
+        run: make datasheet VERSION_TAG="${{ github.event.inputs.version_name }}"
       - name: Assemble Package & Zip Archive
         run: make package
       - name: Upload Artifact
@@ -39,8 +52,11 @@ jobs:
           name: package
           path: package.zip
       - name: Release Archive
-        if: github.event_name == 'release'
+        if: github.event.inputs.release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "package.zip"
+          draft: true
+          commit: ${{ github.event.inputs.commit_sha }}
+          tag: ${{ github.event.inputs.version_name }}
           allowUpdates: true
