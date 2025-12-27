@@ -1,11 +1,12 @@
 VERSION_TAG ?= UNKNOWN_OR_CUSTOM_VERSION
+SMEDA_VERSION := v1.1
 
 # Get current directory
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
 
 # Docker Container Build Setup
-DOCKER_IMAGE = ghcr.io/yliu-hashed/sm-eda-bundle:latest
+DOCKER_IMAGE = ghcr.io/yliu-hashed/sm-eda-bundle:$(SMEDA_VERSION)
 DOCKER_MOUNT_ARGS := --mount type=bind,source="$(MKFILE_DIR)",target=/working
 DOCKER_ARGS := run --rm $(DOCKER_MOUNT_ARGS) $(DOCKER_IMAGE)
 DOCKER_CMD_RUN = docker $(DOCKER_ARGS) bash -l -c "cd working && $(1)"
