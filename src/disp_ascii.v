@@ -1,7 +1,7 @@
 `default_nettype none
 
 module top (
-  input  [6:0] byte_i,
+  input wire [ 6:0] byte_i,
   (* color = "black" *)
   output reg [34:0] disp_o
   );

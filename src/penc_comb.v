@@ -7,8 +7,8 @@
 `ifdef MAX
 
 module top(
-  input  [OPT-1:0] X,
-  output [LEN-1:0] Y
+  input  wire [OPT-1:0] X,
+  output wire [LEN-1:0] Y
   );
 
   parameter LEN = `LEN;
@@ -37,8 +37,8 @@ endmodule
 `ifdef MIN
 
 module top(
-  input  [OPT-1:0] X,
-  output [LEN-1:0] Y
+  input  wire [OPT-1:0] X,
+  output wire [LEN-1:0] Y
   );
 
   parameter LEN = `LEN;

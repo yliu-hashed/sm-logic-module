@@ -5,8 +5,8 @@
 `endif
 
 module top(
-  input  [ LEN-1:0] X,
-  output [RLEN-1:0] Y
+  input  wire [ LEN-1:0] X,
+  output wire [RLEN-1:0] Y
   );
 
   parameter LEN = `LEN;

@@ -11,9 +11,9 @@
 `endif
 
 module top(
-  input  `SIGN [`LEN-1:0] A,
-  input  `SIGN [`LEN-1:0] B,
-  output `SIGN [`LEN-1:0] O
+  input  wire `SIGN [`LEN-1:0] A,
+  input  wire `SIGN [`LEN-1:0] B,
+  output wire `SIGN [`LEN-1:0] O
   );
   assign O = A % B;
 endmodule

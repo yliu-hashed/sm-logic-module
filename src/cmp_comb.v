@@ -5,13 +5,13 @@
 `endif
 
 module top(
-  input  [LEN-1:0] A,
-  input  [LEN-1:0] B,
-  (* color="green"  *) output EQ,
-  (* color="cyan"   *) output SG,
-  (* color="blue"   *) output UG,
-  (* color="purple" *) output MG,
-  (* color="red"    *) output XG
+  input wire [LEN-1:0] A,
+  input wire [LEN-1:0] B,
+  (* color="green"  *) output wire EQ,
+  (* color="cyan"   *) output wire SG,
+  (* color="blue"   *) output wire UG,
+  (* color="purple" *) output wire MG,
+  (* color="red"    *) output wire XG
   );
 
   parameter LEN = `LEN;

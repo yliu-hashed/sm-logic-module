@@ -25,8 +25,8 @@
 `endif
 
 module top(
-  input `SIGN [`I_LEN-1:0] X,
-  output      [`O_LEN-1:0] Y
+  input  wire `SIGN [`I_LEN-1:0] X,
+  output wire       [`O_LEN-1:0] Y
   );
   assign Y = X * X;
 endmodule

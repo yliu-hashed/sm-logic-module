@@ -5,13 +5,13 @@
 `endif
 
 module top(
-  (* color = "blue"  *) input  CLK,
-  (* color = "white" *) input  START,
-  (* color = "green" *) output DONE,
+  (* color = "blue"  *) input  wire CLK,
+  (* color = "white" *) input  wire START,
+  (* color = "green" *) output wire DONE,
 
-  input  [LEN-1:0] A,
-  input  [LEN-1:0] B,
-  output [LEN-1:0] Y
+  input  wire [LEN-1:0] A,
+  input  wire [LEN-1:0] B,
+  output wire [LEN-1:0] Y
   );
 
   parameter LEN = `LEN;

@@ -5,14 +5,14 @@
 `endif
 
 module top(
-  (* color = "blue"  *) input  CLK,
-  (* color = "white" *) input  START,
-  (* color = "green" *) output DONE,
+  (* color = "blue"  *) input  wire CLK,
+  (* color = "white" *) input  wire START,
+  (* color = "green" *) output wire DONE,
 
-  input  [LEN-1:0] A, // numerator
-  input  [LEN-1:0] B, // denominator
-  output [LEN-1:0] Q, // quotient
-  output [LEN-1:0] R  // remainder
+  input  wire [LEN-1:0] A, // numerator
+  input  wire [LEN-1:0] B, // denominator
+  output wire [LEN-1:0] Q, // quotient
+  output wire [LEN-1:0] R  // remainder
   );
 
   parameter LEN = `LEN;

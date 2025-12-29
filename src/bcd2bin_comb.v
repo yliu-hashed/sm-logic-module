@@ -8,9 +8,9 @@
 `endif
 
 module top(
-  input  [DECLEN*4-1:0] BCD,
-  output [BINLEN-1  :0] BIN,
-  output                ovf
+  input  wire [DECLEN*4-1:0] BCD,
+  output wire [BINLEN-1  :0] BIN,
+  output wire                ovf
   );
 
   parameter DECLEN = `DECLEN;

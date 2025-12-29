@@ -38,9 +38,9 @@
 `endif
 
 module top(
-  input `IA_SIGN [`I_LEN-1:0] A,
-  input `IB_SIGN [`I_LEN-1:0] B,
-  output `O_SIGN [`O_LEN-1:0] Y
+  input  wire `IA_SIGN [`I_LEN-1:0] A,
+  input  wire `IB_SIGN [`I_LEN-1:0] B,
+  output wire `O_SIGN  [`O_LEN-1:0] Y
   );
   assign Y = A * B;
 endmodule

@@ -7,15 +7,15 @@
 `ifdef ARG2I
 
 module top(
-  input  [`LEN-1:0] A,
-  input  [`LEN-1:0] B,
+  input  wire [`LEN-1:0] A,
+  input  wire [`LEN-1:0] B,
   (* color = "yellow" *)
-  input             IC,
-  output [`LEN-1:0] Y,
+  input  wire            IC,
+  output wire [`LEN-1:0] Y,
   (* color = "yellow" *)
-  output            OC,
+  output wire            OC,
   (* color = "red" *)
-  output            OVF
+  output wire            OVF
   );
 
   wire guard;
@@ -30,16 +30,16 @@ endmodule
 `ifdef ARG3I
 
 module top(
-  input  [`LEN-1:0] A1,
-  input  [`LEN-1:0] A2,
-  input  [`LEN-1:0] A3,
+  input  wire [`LEN-1:0] A1,
+  input  wire [`LEN-1:0] A2,
+  input  wire [`LEN-1:0] A3,
   (* color = "yellow" *)
-  input       [1:0] IC,
-  output [`LEN-1:0] Y,
+  input  wire [     1:0] IC,
+  output wire [`LEN-1:0] Y,
   (* color = "yellow" *)
-  output      [1:0] OC,
+  output wire [     1:0] OC,
   (* color = "red" *)
-  output            OVF
+  output wire            OVF
   );
 
   wire guard;
@@ -53,17 +53,17 @@ endmodule
 `ifdef ARG4I
 
 module top(
-  input  [`LEN-1:0] A1,
-  input  [`LEN-1:0] A2,
-  input  [`LEN-1:0] A3,
-  input  [`LEN-1:0] A4,
+  input  wire [`LEN-1:0] A1,
+  input  wire [`LEN-1:0] A2,
+  input  wire [`LEN-1:0] A3,
+  input  wire [`LEN-1:0] A4,
   (* color = "yellow" *)
-  input       [1:0] IC,
-  output [`LEN-1:0] Y,
+  input  wire [     1:0] IC,
+  output wire [`LEN-1:0] Y,
   (* color = "yellow" *)
-  output      [1:0] OC,
+  output wire [     1:0] OC,
   (* color = "red" *)
-  output            OVF
+  output wire            OVF
   );
 
   assign {OC, Y} = A1 + A2 + A3 + A4 + IC;
